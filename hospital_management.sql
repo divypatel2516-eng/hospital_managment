@@ -1,5 +1,4 @@
 -- Hospital Management System
--- Student Project - MySQL
 
 CREATE DATABASE IF NOT EXISTS hospital_management;
 USE hospital_management;
@@ -85,7 +84,6 @@ VALUES
 ('Rahul Patel','2001-05-12','Male','9876543210','rahul@gmail.com','Ahmedabad','2026-01-10'),
 ('Neha Shah','1999-08-20','Female','9876543211','neha@gmail.com','Surat','2026-02-15'),
 ('Amit Desai','1995-03-10','Male','9876543212','amit@gmail.com','Vadodara','2025-06-20'),
-('Priya Mehta','2002-11-25','Female',NULL,'priya@gmail.com','Ahmedabad','2026-04-05'),
 ('Karan Joshi','1998-01-18','Male','9876543214','karan@gmail.com','Rajkot','2025-03-12');
 
 -- Sample Doctors
@@ -138,29 +136,19 @@ VALUES
 (5,6,25000,'Paid','2026-09-25');
 
 
--- =========================
--- 1. CRUD OPERATIONS
--- =========================
-
 -- Insert
 INSERT INTO Patients
 (name, gender, phone_number, email, address, registration_date)
 VALUES ('Test Patient','Male','9999999999','test@gmail.com','Ahmedabad','2026-09-30');
-
 -- Update address
 UPDATE Patients
 SET address = 'Gandhinagar'
 WHERE patient_id = 1;
-
 -- Delete cancelled appointments older than 6 months
 DELETE FROM Appointments
 WHERE status = 'Cancelled'
 AND appointment_date < DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
 
-
--- =========================
--- 2. WHERE, HAVING, LIMIT
--- =========================
 
 -- Patients registered in last year
 SELECT *
@@ -181,9 +169,6 @@ SELECT * FROM Doctors
 WHERE consultation_fee > 21000;
 
 
--- =========================
--- 3. AND, OR, NOT
--- =========================
 
 SELECT *
 FROM Appointments
@@ -204,10 +189,6 @@ WHERE NOT EXISTS (
 );
 
 
--- =========================
--- 4. ORDER BY, GROUP BY
--- =========================
-
 SELECT * FROM Doctors
 ORDER BY specialization;
 
@@ -227,10 +208,6 @@ GROUP BY dep.department_id, dep.department_name
 ORDER BY revenue DESC;
 
 
--- =========================
--- 5. AGGREGATE FUNCTIONS
--- =========================
-
 SELECT SUM(amount) AS total_revenue
 FROM Billing
 WHERE payment_status = 'Paid';
@@ -249,10 +226,6 @@ SELECT MIN(consultation_fee) AS lowest_fee FROM Doctors;
 SELECT COUNT(*) AS total_patients FROM Patients;
 
 
--- =========================
--- 6. PRIMARY / FOREIGN KEYS
--- =========================
-
 -- Check medical records with patient and doctor
 SELECT r.record_id, p.name AS patient, d.name AS doctor, r.diagnosis
 FROM Medical_Records r
@@ -264,10 +237,6 @@ SELECT b.invoice_id, b.amount, a.appointment_date, b.payment_status
 FROM Billing b
 JOIN Appointments a ON b.appointment_id = a.appointment_id;
 
-
--- =========================
--- 7. JOINS
--- =========================
 
 -- Doctors with department names
 SELECT d.name AS doctor, dep.department_name
@@ -300,9 +269,6 @@ RIGHT JOIN Appointments a ON p.patient_id = a.patient_id
 WHERE p.patient_id IS NULL;
 
 
--- =========================
--- 8. SUBQUERIES
--- =========================
 
 -- Doctors who handled more than 50 patients
 SELECT d.name
@@ -331,11 +297,6 @@ WHERE doctor_id IN (
     WHERE specialization = 'Dermatology'
 );
 
-
--- =========================
--- 9. DATE FUNCTIONS
--- =========================
-
 -- Visits by month
 SELECT MONTH(appointment_date) AS month, COUNT(*) AS visits
 FROM Appointments
@@ -351,10 +312,6 @@ FROM Medical_Records;
 -- FROM Hospital_Stay;
 
 
--- =========================
--- 10. STRING FUNCTIONS
--- =========================
-
 SELECT UPPER(name) AS patient_name
 FROM Patients;
 
@@ -365,10 +322,6 @@ SELECT name,
        COALESCE(NULLIF(phone_number,''),'Not Available') AS phone
 FROM Patients;
 
-
--- =========================
--- 11. WINDOW FUNCTIONS
--- =========================
 
 -- Rank doctors by patients treated
 SELECT d.name,
@@ -394,10 +347,6 @@ SELECT appointment_id, appointment_date,
        COUNT(*) OVER (ORDER BY appointment_date) AS running_total
 FROM Appointments;
 
-
--- =========================
--- 12. CASE EXPRESSIONS
--- =========================
 
 -- Patient risk level
 SELECT p.name, COUNT(r.record_id) AS records,
